@@ -1,7 +1,12 @@
 <h2>Create new rating</h2>
 
 <%= form_for(@rating) do |f| %>
-  beer: <%= f.number_field :beer_id %>
+  <select style="display: inline" class="form-control" name="beer_id">
+    <% @beers.each do |beer| %>
+      <option value="<%=beer.id%>"><%= beer.to_s %></option>
+    <%end%>
+  </select>
+  </div>
   score: <%= f.number_field :score %>
   <%= f.submit %>
 <% end %>

@@ -15,7 +15,12 @@
   <%= @beer.brewery.name %>
 </p>
 
-<p>Has <%=pluralize(@beer.ratings.count, 'rating')%></p>
+<p>
+  Has <%=pluralize(@beer.ratings.count, 'rating')%>
+  <% if !@beer.ratings.empty? %>
+    , average <%=@beer.average_rating%>
+  <%end%>
+</p>
 
 <%= link_to 'Edit', edit_beer_path(@beer) %> |
 <%= link_to 'Back', beers_path %>
