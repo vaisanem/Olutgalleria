@@ -1,20 +1,21 @@
 class Brewery < ApplicationRecord
-    has_many :beers, dependent: :destroy
-    has_many :ratings, through: :beers
+  has_many :beers, dependent: :destroy
+  has_many :ratings, through: :beers
 
-    def average_rating
-        sum=ratings.inject(0) {|sum, n| sum+n.score}
-        return sum / [ratings.count, 1].max
-    end
+  validates :name, presence: true
+  validates :year, numericality: { greater_than: 1039,
+                                   less_than: 2019, only_integer: true }
 
-    def print_report
-        puts name
-        puts "established at year #{year}"
-        puts "number of beers #{beers.count}"
-      end
+  include RatingAverage
 
-    def restart
-        self.year = 2018
-        puts "changed year to #{year}"
-    end
+  def print_report
+    puts name
+    puts "established at year #{year}"
+    puts "number of beers #{beers.count}"
+  end
+
+  def restart
+    self.year = 2018
+    puts "changed year to #{year}"
+  end
 end

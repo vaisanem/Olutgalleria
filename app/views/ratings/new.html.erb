@@ -1,6 +1,18 @@
 <h2>Create new rating</h2>
 
 <%= form_for(@rating) do |f| %>
+  <% if @rating.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@rating.errors.count, "error") %> prohibited rating from being saved:</h2>
+
+      <ul>
+      <% @rating.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <select style="display: inline" class="form-control" name="beer_id">
     <% @beers.each do |beer| %>
       <option value="<%=beer.id%>"><%= beer.to_s %></option>
