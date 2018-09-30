@@ -4,6 +4,7 @@ class Beer < ApplicationRecord
   has_many :raters, -> { distinct }, through: :ratings, source: :user
 
   validates :name, presence: true
+  validates :style, presence: true
 
   include RatingAverage
 

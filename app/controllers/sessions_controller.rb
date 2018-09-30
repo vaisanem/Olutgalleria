@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id if !user.nil?
       redirect_to user, notice: "Welcome back!"
     else
-      redirect_to login_path, notice: "Wrong credentials"
+      redirect_to login_path, notice: "Wrong credentials."
     end
   end
 

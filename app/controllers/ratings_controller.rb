@@ -9,13 +9,12 @@ class RatingsController < ApplicationController
   end
 
   def create
-    rating = Rating.new beer_id: params[:beer_id], score: params[:rating][:score]
-    rating.user = current_user
-    if rating.save
+    @rating = Rating.new beer_id: params[:beer_id], score: params[:rating][:score]
+    @rating.user = current_user
+    if @rating.user && @rating.save
       redirect_to current_user
     else
-      @beers = Beer.all
-      render :new
+      redirect_to login_path, notice: 'you should be signed in'
     end
   end
 
