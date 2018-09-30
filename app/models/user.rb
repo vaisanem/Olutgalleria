@@ -21,7 +21,7 @@ class User < ApplicationRecord
     grouped = ratings.group_by { |r| r.beer.style }
     sums = { "Weizen" => 0.0, "Lager" => 0.0, "Pale ale" => 0.0, "IPA" => 0.0, "Porter" => 0.0 }
     fav = 0.0
-    style = ""
+    style = nil
     return nil if ratings.empty?
 
     grouped.keys.each do |s|
@@ -34,8 +34,6 @@ class User < ApplicationRecord
         style = s
       end
     end
-    return nil if fav.zero?
-
     style
   end
 
@@ -46,7 +44,7 @@ class User < ApplicationRecord
     return nil if ratings.empty?
 
     grouped.keys.each do |s|
-      a=0
+      a = 0
       grouped[s].each do |r|
         a += r.score.to_f
       end
@@ -60,6 +58,5 @@ class User < ApplicationRecord
   end
 
   def calculate_average_ratings(grouped, sums)
-    
   end
 end

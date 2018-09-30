@@ -33,4 +33,19 @@ describe "User" do
       click_button('Create User')
     }.to change{User.count}.by(1)
   end
+
+  describe "who has rated beers" do
+    before :each do
+      create_beer_with_rating({ user: @user }, 'Lager', 22)
+      visit user_path(@user)
+    end
+
+    it "has favourite style" do
+      expect(page).to have_content 'Favourite style: Lager'
+    end
+
+    it "has favourite brewery" do
+      expect(page).to have_content 'Favourite brewery: anonymous'
+    end
+  end
 end
