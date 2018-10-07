@@ -20,5 +20,14 @@
   <% end %>
 </ul>
 
-<%= link_to 'Edit', edit_beer_club_path(@beer_club) %> |
-<%= link_to 'Back', beer_clubs_path %>
+<% if current_user %>
+  <h4>Join:</h4>
+
+  <%= form_for(@membership) do |f| %>
+    <%= f.hidden_field :beer_club_id %>
+    <%= f.submit value:"Join #{@beer_club.name}" %>
+  <% end %>
+
+  <%= link_to 'Edit', edit_beer_club_path(@beer_club) %> 
+  <%= link_to 'Destroy', @beer_club, method: :delete, data: { confirm: 'Are you sure?' } %>
+<% end %>

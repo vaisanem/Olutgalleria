@@ -19,14 +19,14 @@ class User < ApplicationRecord
 
   def favourite_style
     grouped = ratings.group_by { |r| r.beer.style }
-    sums = { "Weizen" => 0.0, "Lager" => 0.0, "Pale ale" => 0.0, "IPA" => 0.0, "Porter" => 0.0 }
+    sums = { "Weizen" => 0.0, "Lager" => 0.0, "Pale Ale" => 0.0, "IPA" => 0.0, "Porter" => 0.0 }
     fav = 0.0
     style = nil
     return nil if ratings.empty?
 
     grouped.keys.each do |s|
       grouped[s].each do |r|
-        sums[s] += r.score.to_f
+        sums[s] += r.score
       end
       sums[s] /= grouped[s].count
       if sums[s] > fav

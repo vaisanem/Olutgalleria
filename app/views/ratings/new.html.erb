@@ -13,9 +13,9 @@
     </div>
   <% end %>
 
-  <select style="display: inline" class="form-control" name="beer_id">
+  <select style="display: inline" class="form-control" name="rating[beer_id]">
     <% @beers.each do |beer| %>
-      <option value="<%=beer.id%>"><%= beer.to_s %></option>
+      <option value="<%=beer.id %>" selected="<% @rating.beer_id %>"><%= beer.to_s %></option>
     <%end%>
   </select>
   </div>
