@@ -11,7 +11,7 @@ class RatingsController < ApplicationController
   def create
     @rating = Rating.new beer_id: params[:rating][:beer_id], score: params[:rating][:score]
     @rating.user = current_user
-    if @rating.user 
+    if @rating.user
       if @rating.save
         redirect_to current_user
       else

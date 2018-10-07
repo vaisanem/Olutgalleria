@@ -4,7 +4,7 @@ class PlacesController < ApplicationController
 
   def show
     places = Rails.cache.read(session[:city])
-    @place = places.find { |place| place.id == params[:id]}
+    @place = places.find { |place| place.id == params[:id] }
     redirect_to places_path if !@place
   end
 

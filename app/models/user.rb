@@ -57,6 +57,7 @@ class User < ApplicationRecord
     b
   end
 
-  def calculate_average_ratings(grouped, sums)
+  def already_a_member(beer_club)
+    beer_clubs.member?(beer_club)
   end
 end

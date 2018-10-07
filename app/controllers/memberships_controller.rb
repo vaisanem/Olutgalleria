@@ -14,8 +14,12 @@ class MembershipsController < ApplicationController
 
   # GET /memberships/new
   def new
-    @membership = Membership.new
-    @beer_clubs = BeerClub.all
+    if !current_user
+      redirect_to login_path, notice: 'you should be signed in'
+    else
+      @membership = Membership.new
+      @beer_clubs = BeerClub.all.reject{ |club| current_user.already_a_member(club) }
+    end
   end
 
   # GET /memberships/1/edit
@@ -30,8 +34,8 @@ class MembershipsController < ApplicationController
     @membership.user_id = current_user.id
 
     respond_to do |format|
-      if not_a_member(@membership) && @membership.save
-        format.html { redirect_to @membership, notice: 'Membership was successfully created.' }
+      if !current_user.already_a_member(@membership.beer_club) && @membership.save
+        format.html { redirect_to @membership.beer_club, notice: 'Membership was successfully created.' }
         format.json { render :show, status: :created, location: @membership }
       else
         @beer_clubs = BeerClub.all
@@ -70,10 +74,6 @@ class MembershipsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_membership
     @membership = Membership.find(params[:id])
-  end
-
-  def not_a_member(membership)
-    !BeerClub.find(membership.beer_club_id).members.member?(User.find(membership.user_id))
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
