@@ -1,0 +1,6 @@
+<h1><%= @place.name %></h1>
+<% Place.contact_info.each do |field| %>
+  <li>
+    <%= field %>: <%=@place.send(field)%>
+  </li>
+<% end %>

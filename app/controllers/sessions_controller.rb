@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 
   def create
     user = User.find_by(username: params[:username])
-    user = user.authenticate(params[:password])
+    user = user.authenticate(params[:password]) if user
     if user
       session[:user_id] = user.id if !user.nil?
       redirect_to user, notice: "Welcome back!"
