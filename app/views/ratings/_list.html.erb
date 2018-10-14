@@ -1,0 +1,17 @@
+<table class='table-bordered'>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Average</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% records.each do |record| %>
+        <tr>
+          <td><%= record.name %></td>
+          <td><%= round(record.average_rating) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
