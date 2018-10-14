@@ -1,6 +1,9 @@
 
 <h2>
 	<%= @brewery.name %>
+	<% if not @brewery.active  %>
+    <span class="badge badge-danger">retired</span>
+  <% end %>
 </h2>
 
 <p>
@@ -22,7 +25,7 @@
 <p>
 	Has <%= pluralize(@brewery.ratings.count, 'rating') %>
 	<% if !@brewery.ratings.empty? %>
-		, average <%=@brewery.average_rating%>
+		, average <span class="badge"><%= round(@brewery.average_rating) %></span>
 	<%end%>
 </p>
 

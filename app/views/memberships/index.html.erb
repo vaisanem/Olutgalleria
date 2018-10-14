@@ -1,8 +1,7 @@
-<p id="notice"><%= notice %></p>
 
 <h1>Memberships</h1>
 
-<table>
+<table class='table'>
   <thead>
     <tr>
       <th>Beer club</th>
@@ -18,7 +17,7 @@
         <td><%= membership.user_id %></td>
         <td><%= link_to 'Show', membership %></td>
         <td><%= link_to 'Edit', edit_membership_path(membership) %></td>
-        <td><%= link_to 'Destroy', membership, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', membership, method: :delete, data: { confirm: 'Are you sure?' }, class:'.btn-sm btn-danger' %></td>
       </tr>
     <% end %>
   </tbody>

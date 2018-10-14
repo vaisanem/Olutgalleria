@@ -60,4 +60,14 @@ class User < ApplicationRecord
   def already_a_member(beer_club)
     beer_clubs.member?(beer_club)
   end
+
+  def self.top_raters(amount)
+    counts = Rating.group(:user_id).count.sort_by { |k,v| v}.reverse
+    amount = counts.length if counts.length < amount
+    raters = {}
+    for i in 0..amount-1
+      raters[User.find(counts[i].first).username] = counts[i].second
+    end
+    raters
+  end
 end

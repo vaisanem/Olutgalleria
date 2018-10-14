@@ -1,9 +1,18 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_user
+  helper_method :current_user, :round
+
+  include ActionView::Helpers::NumberHelper
 
   def current_user
     return nil if session[:user_id].nil?
 
     User.find(session[:user_id])
+  end
+
+  def round(float)
+    i = 0;
+    n = (number_with_precision(float, precision: 2).to_f - number_with_precision(float, precision: 1).to_f) * 100
+    i = 0.1 if n >= 5.0
+    number_with_precision(float, precision: 1).to_f + i
   end
 end

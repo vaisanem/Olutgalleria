@@ -3,7 +3,7 @@
   <%= @user.username %>
 </p>
 
-<p>Has made <%= pluralize(@user.ratings.count, 'rating') %>, average rating <%= @user.average_rating %> </p>
+<p>Has made <%= pluralize(@user.ratings.count, 'rating') %>, average rating <span class="badge"><%= round(@user.average_rating) %></span> </p>
 
 <% if @user.favourite_style %>
   <p>Favourite style: <%=@user.favourite_style%></p>
@@ -16,9 +16,9 @@
 <ul>
   <% @user.ratings.each do |rating| %>
     <li>
-      <%= rating %>
+      <%= link_to rating.beer.name, rating.beer %> <span class="badge"><%= rating.score %></span>
       <% if current_user==@user %>
-        <%= link_to 'Delete', rating, method: :delete, data: { confirm: 'Are you sure?' } %> 
+        <%= link_to 'Delete', rating, method: :delete, data: { confirm: 'Are you sure?' }, class:'.btn-sm btn-danger', class:'.btn-xs btn-danger' %> 
       <% end %>
     </li>
   <% end %>
@@ -35,6 +35,6 @@
 
 <% if current_user==@user %>
   <%= link_to 'Change password', edit_user_path(@user) %> |
-  <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %> |
+  <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' }, class:'.btn-sm btn-danger' %> |
 <% end %>
 <%= link_to 'Back', users_path %>

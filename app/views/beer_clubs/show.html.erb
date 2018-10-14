@@ -28,8 +28,13 @@
       <%= f.hidden_field :beer_club_id %>
       <%= f.submit value:"Join #{@beer_club.name}" %>
     <% end %>
+  <% else %>
+    <%= form_for(@membership, url: membership_path(@membership.id), html: {method: "delete" }) do |f| %>
+      <%= f.hidden_field :beer_club_id %>
+      <%= f.submit value:"End membership" %>
+    <% end %>
   <% end %>
 
   <%= link_to 'Edit', edit_beer_club_path(@beer_club) %> 
-  <%= link_to 'Destroy', @beer_club, method: :delete, data: { confirm: 'Are you sure?' } %>
+  <%= link_to 'Destroy', @beer_club, method: :delete, data: { confirm: 'Are you sure?' }, class:'.btn-sm btn-danger' %>
 <% end %>

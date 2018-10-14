@@ -17,7 +17,7 @@
 <p>
   Has <%=pluralize(@beer.ratings.count, 'rating')%>
   <% if !@beer.ratings.empty? %>
-    , average <%=@beer.average_rating%>
+    , average <span class="badge"><%= round(@beer.average_rating) %></span>
   <%end%>
 </p>
 
@@ -31,5 +31,5 @@
   <% end %>
 
   <%= link_to 'Edit', edit_beer_path(@beer) %> 
-  <%= link_to 'Destroy', @beer, method: :delete, data: { confirm: 'Are you sure?' } %>
+  <%= link_to 'Destroy', @beer, method: :delete, data: { confirm: 'Are you sure?' }, class:'.btn-sm btn-danger' %>
 <% end %>
