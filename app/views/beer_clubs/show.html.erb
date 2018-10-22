@@ -15,23 +15,39 @@
 <ul>
   <% @beer_club.members.each do |member| %>
     <li>
-      <%= link_to member.username, users_path(member) %>
+      <%= link_to member.username, user_path(member) %>
     </li>
   <% end %>
 </ul>
 
 <% if current_user %>
-  <% if !current_user.already_a_member(@beer_club) %>
-    <h4>Join:</h4>
+  <% if !current_user.already_applied_for(@beer_club) %>
+    <h4>Apply for a membership:</h4>
 
     <%= form_for(@membership) do |f| %>
       <%= f.hidden_field :beer_club_id %>
-      <%= f.submit value:"Join #{@beer_club.name}" %>
+      <%= f.submit value:"Apply" %>
     <% end %>
   <% else %>
+    <% if !@beer_club.applicants.empty? %>
+      <h4>Membership applicants</h4>
+      <ul>
+        <% @beer_club.applicants.each do |applicant| %>
+          <li>
+            <%= link_to applicant.username, user_path(applicant) %>
+            <% if current_user.already_a_member(@beer_club) %>
+              <%= form_for(m=Membership.find_membership(applicant, @beer_club), url: membership_confirm_path(m.id), html: {method: "post" }) do |f| %>
+                <%= f.submit value:"Confirm" %>
+              <% end %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+
     <%= form_for(@membership, url: membership_path(@membership.id), html: {method: "delete" }) do |f| %>
       <%= f.hidden_field :beer_club_id %>
-      <%= f.submit value:"End membership" %>
+      <%= f.submit value:"Cancel membership" %>
     <% end %>
   <% end %>
 

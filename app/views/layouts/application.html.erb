@@ -47,7 +47,7 @@
                 <li class="dropdown-item"><%= link_to 'Rate a beer ', new_rating_path %></li>   
                 <li class="dropdown-item"><%= link_to 'Join a club ', new_membership_path %></li>
                 <li class="dropdown-item divider"></li> 
-                <li class="dropdown-item"><%= link_to 'Signout', logout_path %></li>
+                <li class="dropdown-item"><%= link_to 'Log out', logout_path, method: :delete %></li>
               </ul>
             </div>                  
           <% else %>

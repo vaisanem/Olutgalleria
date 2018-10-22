@@ -1,8 +1,10 @@
 class User < ApplicationRecord
   has_many :ratings, dependent: :destroy
-  has_many :beers, through: :ratings
-  has_many :memberships
+  has_many :beers, -> { distinct }, through: :ratings
+  has_many :memberships, -> { where confirmed: true }
+  has_many :applications, -> { where confirmed: [nil, false] }, class_name: "Membership"
   has_many :beer_clubs, through: :memberships
+  has_many :clubs_applied_for, through: :applications, source: :beer_club
 
   has_secure_password
 
@@ -40,7 +42,7 @@ class User < ApplicationRecord
   def favourite_brewery
     grouped = ratings.group_by { |r| r.beer.brewery.id }
     fav = 0.0
-    b = nil
+    brewery = nil
     return nil if ratings.empty?
 
     grouped.keys.each do |s|
@@ -51,21 +53,27 @@ class User < ApplicationRecord
       a /= grouped[s].count
       if a > fav
         fav = a
-        b = grouped[s][0].beer.brewery
+        brewery = grouped[s][0].beer.brewery
       end
     end
-    b
+    brewery
   end
 
   def already_a_member(beer_club)
     beer_clubs.member?(beer_club)
   end
 
+  def already_applied_for(beer_club)
+    return clubs_applied_for.member?(beer_club) if !beer_clubs.member?(beer_club)
+
+    beer_clubs.member?(beer_club)
+  end
+
   def self.top_raters(amount)
-    counts = Rating.group(:user_id).count.sort_by { |k,v| v}.reverse
+    counts = Rating.group(:user_id).count.sort.reverse
     amount = counts.length if counts.length < amount
     raters = {}
-    for i in 0..amount-1
+    for i in 0..amount - 1
       raters[User.find(counts[i].first).username] = counts[i].second
     end
     raters

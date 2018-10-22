@@ -4,14 +4,15 @@ class BeerClubsController < ApplicationController
   # GET /beer_clubs
   # GET /beer_clubs.json
   def index
-    @beer_clubs = BeerClub.all
+    order = params[:order] || "name"
+    @beer_clubs = BeerClub.all.order(order)
   end
 
   # GET /beer_clubs/1
   # GET /beer_clubs/1.json
   def show
     if current_user
-      if current_user.already_a_member(@beer_club)
+      if current_user.already_applied_for(@beer_club)
         @membership = Membership.find_membership(current_user, @beer_club)
       else
         @membership = Membership.new
@@ -35,11 +36,12 @@ class BeerClubsController < ApplicationController
     @beer_club = BeerClub.new(beer_club_params)
 
     respond_to do |format|
-      if @beer_club.save
+      if current_user && @beer_club.save
+        Membership.new(beer_club_id: @beer_club.id, user_id: current_user.id, confirmed: true).save
         format.html { redirect_to @beer_club, notice: 'Beer club was successfully created.' }
         format.json { render :show, status: :created, location: @beer_club }
       else
-        format.html { render :new }
+        format.html { redirect_to login_path, notice: 'You should be logged in.' }
         format.json { render json: @beer_club.errors, status: :unprocessable_entity }
       end
     end

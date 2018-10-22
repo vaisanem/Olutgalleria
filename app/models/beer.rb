@@ -7,12 +7,13 @@ class Beer < ApplicationRecord
   validates :style, presence: true
 
   include RatingAverage
+  extend Top
 
   def to_s
     name + ", " + brewery.name
   end
 
   def self.top_beers(amount)
-    Beer.all.sort_by{ |b| -b.average_rating }[0..amount-1]
+    Beer.all.sort_by{ |b| -b.average_rating }[0..amount - 1]
   end
 end

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get '/login', to: 'sessions#new'
   post '/places', to: 'places#search'
   delete '/logout', to: 'sessions#destroy'
+  post '/memberships/:id/confirm', to: 'memberships#confirm', as: 'membership_confirm'
   resources :places, only: [:index, :show]
   resources :ratings, only: [:index, :new, :create, :destroy]
   resource :session, only: [:create]

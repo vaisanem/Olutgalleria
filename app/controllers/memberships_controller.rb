@@ -1,5 +1,5 @@
 class MembershipsController < ApplicationController
-  before_action :set_membership, only: [:show, :edit, :update, :destroy]
+  before_action :set_membership, only: [:show, :edit, :update, :confirm, :destroy]
 
   # GET /memberships
   # GET /memberships.json
@@ -18,7 +18,7 @@ class MembershipsController < ApplicationController
       redirect_to login_path, notice: 'you should be signed in'
     else
       @membership = Membership.new
-      @beer_clubs = BeerClub.all.reject{ |club| current_user.already_a_member(club) }
+      @beer_clubs = BeerClub.all.reject{ |club| current_user.already_applied_for(club) }
     end
   end
 
@@ -32,17 +32,24 @@ class MembershipsController < ApplicationController
     redirect_to login_path, notice: 'you should be signed in' if !current_user
     @membership = Membership.new(membership_params)
     @membership.user_id = current_user.id
+    @membership.confirmed = false
 
     respond_to do |format|
-      if !current_user.already_a_member(@membership.beer_club) && @membership.save
-        format.html { redirect_to @membership.beer_club, notice: 'Membership was successfully created.' }
+      if !current_user.already_applied_for(@membership.beer_club) && @membership.save
+        format.html { redirect_to @membership.beer_club, notice: 'Application was successfully created.' }
         format.json { render :show, status: :created, location: @membership }
       else
-        @beer_clubs = BeerClub.all
+        @beer_clubs = BeerClub.all.reject{ |club| current_user.already_applied_for(club) }
         format.html { render :new }
         format.json { render json: @membership.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def confirm
+    @membership.confirmed = true if current_user.already_a_member(@membership.beer_club)
+    @membership.save
+    redirect_to beer_clubs_path
   end
 
   # PATCH/PUT /memberships/1
