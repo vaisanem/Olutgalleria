@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
     User.find(session[:user_id])
   end
 
+  def ensure_that_signed_in
+    redirect_to login_path, notice: 'you should be signed in' if current_user.nil?
+  end
+
   def round(float)
     i = 0;
     n = (number_with_precision(float, precision: 2).to_f - number_with_precision(float, precision: 1).to_f) * 100

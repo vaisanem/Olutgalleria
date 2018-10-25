@@ -5,6 +5,8 @@ include Helpers
 describe "Beer" do
 
   before :each do
+    FactoryBot.create :user
+    sign_in username: 'Pekka', password: 'Foobar1'
     @brewery = Brewery.create(name: "Whatever", year: 2017)
     visit new_beer_path
     select('Lager', from:'beer_style')

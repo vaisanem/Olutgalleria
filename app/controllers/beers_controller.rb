@@ -1,4 +1,5 @@
 class BeersController < ApplicationController
+  before_action :ensure_that_signed_in, except: [:index, :show]
   before_action :set_beer, only: [:show, :edit, :update, :destroy]
   before_action :set_breweries, :set_styles, only: [:new, :edit]
 
@@ -36,7 +37,6 @@ class BeersController < ApplicationController
   # POST /beers.json
   def create
     @beer = Beer.new(beer_params)
-
     respond_to do |format|
       if @beer.save
         format.html { redirect_to beers_path, notice: 'Beer was successfully created.' }

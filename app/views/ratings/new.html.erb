@@ -12,11 +12,13 @@
       </ul>
     </div>
   <% end %>
-    <select style="display: inline" name="rating[beer_id]">
-      <% @beers.each do |beer| %>
-        <option value="<%=beer.id %>" selected="<% @rating.beer_id %>"><%= beer.to_s %></option>
-      <%end%>
-    </select>
-    score: <%= f.number_field :score %>
-    <%= f.submit %>
+    <p>
+      <select name="rating[beer_id]">
+        <% @beers.each do |beer| %>
+          <option value="<%=beer.id %>" selected="<% @rating.beer_id %>"><%= beer.to_s %></option>
+        <%end%>
+      </select>
+      score: <%= f.number_field :score %>
+      <%= f.submit %>
+    </p>
 <% end %>

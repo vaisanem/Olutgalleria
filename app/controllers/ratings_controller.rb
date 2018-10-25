@@ -1,4 +1,6 @@
 class RatingsController < ApplicationController
+  before_action :ensure_that_signed_in, except: [:index]
+
   def index
     @recent = Rating.recent
     @top_raters = User.top_raters(3)
@@ -14,14 +16,10 @@ class RatingsController < ApplicationController
   def create
     @rating = Rating.new beer_id: params[:rating][:beer_id], score: params[:rating][:score]
     @rating.user = current_user
-    if @rating.user
-      if @rating.save
-        redirect_to current_user
-      else
-        redirect_to new_rating_path
-      end
+    if @rating.save
+      redirect_to current_user
     else
-      redirect_to login_path, notice: 'you should be signed in'
+      redirect_to new_rating_path
     end
   end
 

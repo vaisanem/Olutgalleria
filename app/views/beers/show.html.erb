@@ -30,6 +30,7 @@
     <%= f.submit %>
   <% end %>
 
-  <%= link_to 'Edit', edit_beer_path(@beer) %> 
-  <%= link_to 'Destroy', @beer, method: :delete, data: { confirm: 'Are you sure?' }, class:'.btn-sm btn-danger' %>
+  <%= link_to 'Edit', edit_beer_path(@beer) %> |
+  <%= link_to 'Destroy', @beer, method: :delete, data: { confirm: 'Are you sure?' }, class:'.btn-sm btn-danger' %> |
 <% end %>
+<%= link_to 'Back', beers_path %>

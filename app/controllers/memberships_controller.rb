@@ -1,4 +1,5 @@
 class MembershipsController < ApplicationController
+  before_action :ensure_that_signed_in, except: [:index, :show]
   before_action :set_membership, only: [:show, :edit, :update, :confirm, :destroy]
 
   # GET /memberships
@@ -14,12 +15,8 @@ class MembershipsController < ApplicationController
 
   # GET /memberships/new
   def new
-    if !current_user
-      redirect_to login_path, notice: 'you should be signed in'
-    else
-      @membership = Membership.new
-      @beer_clubs = BeerClub.all.reject{ |club| current_user.already_applied_for(club) }
-    end
+    @membership = Membership.new
+    @beer_clubs = BeerClub.all.reject{ |club| current_user.already_applied_for(club) }
   end
 
   # GET /memberships/1/edit
@@ -29,7 +26,6 @@ class MembershipsController < ApplicationController
   # POST /memberships
   # POST /memberships.json
   def create
-    redirect_to login_path, notice: 'you should be signed in' if !current_user
     @membership = Membership.new(membership_params)
     @membership.user_id = current_user.id
     @membership.confirmed = false

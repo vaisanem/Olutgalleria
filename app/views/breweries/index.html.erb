@@ -10,4 +10,4 @@
 <h4> Retired breweries <span class="badge"><%= @retired_breweries.count %></span> </h4>
 <%= render 'list', breweries: @retired_breweries %>
 
-<%= link_to 'New Brewery', new_brewery_path %>
+<%= link_to 'New Brewery', new_brewery_path if current_user %>

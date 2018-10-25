@@ -40,6 +40,15 @@ describe "User" do
       visit user_path(@user)
     end
 
+    it "has her and only her ratings displayed" do
+      create_beer_with_rating({ user: @user }, 'IPA', 20)
+      create_beer_with_rating({ user: FactoryBot.create(:user, username: "Pekko") }, 'Lager', 22)
+      visit user_path(@user)
+
+      expect(page).to have_content 'anonymous 22'
+      expect(page).to have_content 'anonymous 20'
+    end
+
     it "has favourite style" do
       expect(page).to have_content 'Favourite style: Lager'
     end
